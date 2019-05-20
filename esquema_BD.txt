@@ -2,8 +2,9 @@
 
     role (#id, name, description)
     
-    user (#id, username, password(md5), email,  ( + info )
+    user (#id, username, password(md5), email, role *, ( + info )
     
+                                            FK: role(id)
     
     
     company (#id, name, type, address,  ((+ info)  )
