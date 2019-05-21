@@ -7,18 +7,23 @@
                                             FK: role(id)
     
     
-    company (#id, name, type, address,  ((+ info)  )
+    company (#id, name, type, address, user *((+ info)  )
     
-    activity (#id, name, company *, type, description, status (0-5), date, ((+ info)  )  <-- tastos
+                                    FK: user(id)
+    
+    activity (#id, name, company *, type, description, status (0-5), date, timestamp, product *, ((+ info)  )  <-- tastos
 
-                        FK: company (id)
+                        FK: company (id)                                            FK: product (id)
+                        
+                        
+    product (#id, name, description)
                         
                         
 
-    inscription (#id, user, activity)
+    inscription (#user * , #activity *)
     
             FK: user (id)    FK: activity (id)
                         
-    review (#id, user *, activity *, rating (1-5), text)
+    review (#user, #activity *, rating (1-5), text)
     
             FK: user (id)    FK: activity (id)

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Testing extends CI_Controller {
+class Client extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,15 +20,8 @@ class Testing extends CI_Controller {
 	 */
 	public function index()
 	{
-        
-        
-        //creo el objecte Activity
-        
-        
-        
-
-        exit;
-        
-		//$this->load->view('welcome_message');
+        $this->load->view('client');
 	}
+    
+   
 }

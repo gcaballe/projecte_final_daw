@@ -4,9 +4,11 @@
 // Author: Guillem Caballé Tomàs
 // **********************************************
 
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 // User class is the user of the webpage
-class User
+class User extends CI_Model
 {
+    
   //integer id, unique
   private $id = null;
   
@@ -20,9 +22,12 @@ class User
   /*TO-DO + info*/
   
   //integer
-  private $role;
+  private $role; 
   
-  public function __construct($paramUsername, $paramPassword, $paramEmail, $paramRole) {
+  function __construct($paramUsername = null, $paramPassword = null, $paramEmail = null, $paramRole = null) {
+    
+    parent::__construct();
+    
     $this->setUsername($paramUsername);
     $this->setPassword($paramPassword);
     $this->setEmail($paramEmail);
@@ -91,13 +96,30 @@ class User
       return $this->role == $role;
   }
   
-  public function get_insert_sql(){
+  public function insert(){
       $u = $this->getUsername();
       $p = $this->getPassword();
       $e = $this->getEmail();
       $r = $this->getRole();
       $sql = "INSERT INTO user (username, password, email, role) VALUES ('$u','$p','$e',$r)";
-      return return $sql;
+      return $this->db->query($sql);
+  }
+  
+  //returns 0 if not valid, 1 if valid
+  public function validate(){
+      $u = $this->getUsername();
+      $p = $this->getPassword();
+      $sql = "SELECT id, username, email, role FROM user WHERE username like '$u' AND password like '$p'";
+      $r = $this->db->query($sql)->row();
+
+      if($r != null) {
+        $this->setId($r->id);
+        $this->setEmail($r->email);
+        $this->setRole($r->role);
+        return 1;
+      }else{
+          return 0;
+      }
   }
   
   
