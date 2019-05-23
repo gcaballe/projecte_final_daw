@@ -21,7 +21,30 @@ class Company extends CI_Controller {
 	public function index()
 	{
         $this->load->view('company');
+        
 	}
+    
+    public function add_activity(){
+        
+        //id ho crea la BD
+        
+        
+        //agafem del formulari: name, product, type, description, timestamp
+
+        $n = $this->input->post("name");
+        $c = 3; //company ho agafo de la session
+        $p = $this->input->post("product");
+        $t = $this->input->post("type");
+        $d = $this->input->post("description");
+        $tt = null;//$tt = $this->input->post("timestamp");
+        
+        $a = new Activity($n, $c, $p, $t, $d, $tt);
+        
+        $a->insert();
+        
+    }
+    
+    
     
     
 }

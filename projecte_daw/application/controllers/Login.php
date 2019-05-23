@@ -3,21 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 	public function index()
 	{
         $this->load->view('login');
@@ -30,7 +15,7 @@ class Login extends CI_Controller {
         
         //user object
         //$user = new User($u, $p, null, null);
-        $user = new User();
+        $user = new User($u, $p, null, null);
         $user->setUsername($u);
         $user->setPassword($p);
         
@@ -40,10 +25,8 @@ class Login extends CI_Controller {
             echo "user valid: " . $user->toString();
             
             //envio al panell d'user o de company
-            
-            if($user->role == 1) redirect('company/index');
-            else redirect('client/index');
-            
+            if($user->getRole() == 1) redirect('Company/index');
+            else if($user->getRole() == 2) redirect('Client/index');
         }else redirect('login/error');
         
     }

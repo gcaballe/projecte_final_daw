@@ -20,13 +20,14 @@ class Testing extends CI_Controller {
 	 */
 	public function index()
 	{
-        
-        
-        //creo el objecte Activity
-        
-        
-        
 
+        $act = new Activity();
+        $l = $act->getAll(array("company" => 1));
+        foreach($l as $obj){
+            echo $obj->toString();
+        }
+        
+        
         exit;
         
 		//$this->load->view('welcome_message');
