@@ -27,19 +27,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <label for="product" >Product:<br></label>
                 <select id="product" name="product">
                     <?php
-                        $productes = array(
-                            array("id"=>0, "name"=>"jamon"),
-                            array("id"=>1, "name"=>"queso"),
-                            array("id"=>2, "name"=>"vinillo peleón")
-                        );
-                        foreach($productes as $p){
-                            echo "<option value=".$p['id'].">".$p['name']."</option>";
+                    
+                        foreach($products as $p){
+                            echo "<option value=" . $p->getId() .">" . $p->getName() ."</option>";
                         }
+                        
                     ?>
                 </select><br>
-                
-                <label for="type" >Type:<br></label>
-                <input type="text" id="type" name="type" /><br>
                 
                 <label for="description" >Description:<br></label>
                 <input type="text" id="description" name="description" /><br>
@@ -58,7 +52,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         <h2>Llista de les nostres activitats</h2>
         
+        <table>
+        <?php
         
+            foreach($activities as $a){
+                echo "<p>" . $a->toString() . "</p>";
+            }
+        
+        ?>
+        </table>
 	</div>
 
 	<p class="footer">Footer</p>

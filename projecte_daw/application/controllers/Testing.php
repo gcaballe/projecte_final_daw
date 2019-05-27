@@ -21,13 +21,12 @@ class Testing extends CI_Controller {
 	public function index()
 	{
 
-        $act = new Activity();
-        $l = $act->getAll(array("company" => 1));
-        foreach($l as $obj){
-            echo $obj->toString();
-        }
+    
+        $p = Product::get(3);
         
+        echo $p->toString();
         
+            echo "estas a testing index";
         exit;
         
 		//$this->load->view('welcome_message');

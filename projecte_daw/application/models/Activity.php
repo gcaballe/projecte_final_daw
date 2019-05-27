@@ -10,24 +10,23 @@ class Activity extends CI_Model
     private $id;
 
     private $name;
-    private $company;
     private $product;
-    private $type;
     private $description;
     private $status;
     private $date;
     private $timestamp;
     
-    function __construct($name = null, $company = null, $product = null, $type = null, $description = null, $timestamp = null/* = time()*/) {
+    //constructor with id
+    function __construct($id = null, $name = null, $product = null, $description = null, $timestamp = null) {
         
         parent::__construct();
+        $this->setId($id);
         $this->setName($name);
-        $this->setTimestamp($timestamp);
         $this->setProduct($product);
-        $this->set_type($type);
         $this->setDescription($description);
-        //status
+        $this->setStatus("open");
         $this->setTimestamp($timestamp);
+        if($timestamp == null) $this->setTimestamp(time());
     }
     
     //setter
@@ -40,18 +39,10 @@ class Activity extends CI_Model
         $this->name = $param;
     }
     
-    public function setCompany($param){
-        $this->company = $param;
-    }
-    
     public function setProduct($param){
         $this->product = $param;
     }
-    
-    public function set_type($param){
-        $this->type = $param;
-    }
-    
+
     public function setDescription($param){
         $this->description = $param;
     }
@@ -74,16 +65,8 @@ class Activity extends CI_Model
         return $this->name;
     }
     
-    public function getCompany(){
-        return $this->company;
-    }
-    
     public function getProduct(){
         return $this->product;
-    }
-    
-    public function get_type(){
-        return $this->type;
     }
     
     public function getDescription(){
@@ -110,12 +93,9 @@ class Activity extends CI_Model
 
         $aux .= "Id: ".$this->getId()."<br>";
         $aux .= "Name: ".$this->getName()."<br>";
-        $aux .= "Company: ".$this->getCompany()."<br>";
         $aux .= "Product: ".$this->getProduct()."<br>";
-        $aux .= "Type: ".$this->get_type()."<br>";
         $aux .= "Description: ".$this->getDescription()."<br>";
         $aux .= "Status: ".$this->getStatus()."<br>";
-        //$aux .= "Date: ".$this->getDate()."<br>";
         $aux .= "Timestamp: ".$this->getTimestamp()."<br>";
         
         return $aux;
@@ -123,12 +103,11 @@ class Activity extends CI_Model
 	
     public function insert(){
         $n = $this->getName();
-        $c = $this->getCompany();
         $p = $this->getProduct();
-        $t = $this->get_type();
+        $d = $this->getDescription();
         $s = $this->getStatus();
         $tt = $this->getTimestamp();
-        $sql = "INSERT INTO activity (name, company, product, type, status, timestamp) VALUES ('$n', $c, $p, '$t', '$s', $tt)";
+        $sql = "INSERT INTO activity (name, product, description, status, timestamp) VALUES ('$n', $p, '$d', '$s', $tt)";
         return $this->db->query($sql);
     }
     
@@ -136,26 +115,62 @@ class Activity extends CI_Model
     public function get($id){
         $sql = "SELECT * FROM activity WHERE id = $id";
         $r = $this->db->query($sql)->row();
-        $a = new Activity($r->name, $r->company, $r->product, $r->type, $r->description, $r->status, $r->timestamp);
+        $a = new Activity($r->id, $r->name, $r->product, $r->description, $r->status, $r->timestamp);
         return $a;
     }
     
     //returns an array of activity objects, TO-DO implement filters
-    public function getAll($filter = null){
+    public static function getAllOpen(){
         
-        if($filter != null){
-            $key = key($filter);
-            $val = $filter[$key];
-        }
+        $CI =& get_instance();
+
+        $sql = "SELECT * FROM activity WHERE status = 'open'";
         
-        $sql = "SELECT * FROM activity";
-        if($filter != null) $sql .= " WHERE $key = $val";
-        
-        $result = $this->db->query($sql)->result();
+        $result = $CI->db->query($sql)->result();
         
         $arr = array();
         foreach ($result as $r){
-            $a = new Activity($r->name, $r->company, $r->product, $r->type, $r->description, $r->status, $r->timestamp);
+            
+            $p = Product::get($r->product);
+            
+            $a = new Activity($r->id, $r->name, $p, $r->description, $r->status, $r->timestamp);
+            $arr[] = $a;
+        }
+        return $arr;
+    }
+    
+    
+    //returns an array of activity objects
+    public static function getAllDoneByUser($user){
+        
+        $CI =& get_instance();
+        
+        $sql_aux = "SELECT activity FROM review WHERE user = $user";
+
+        $sql = "SELECT * FROM activity WHERE id IN ($sql_aux) AND status = 'done'";
+        
+        $result = $CI->db->query($sql)->result();
+        
+        $arr = array();
+        foreach ($result as $r){
+            $a = new Activity($r->id, $r->name, $r->product, $r->description, $r->status, $r->timestamp);
+            $arr[] = $a;
+        }
+        return $arr;
+    }
+    
+    //returns an array of activity objects of a certain $company
+    public static function getAllByCompany($company){
+        //com que es method static he de fer aixo
+        $CI =& get_instance();
+ 
+        $sql = "SELECT * FROM activity WHERE product IN (SELECT id FROM product WHERE company = $company)";
+        
+        $result = $CI->db->query($sql)->result();
+        
+        $arr = array();
+        foreach ($result as $r){
+            $a = new Activity($r->id, $r->name, $r->product, $r->description, $r->status, $r->timestamp);
             $arr[] = $a;
         }
         return $arr;
@@ -163,7 +178,7 @@ class Activity extends CI_Model
     
     /*
     public function update($id){
-        $sql = "UPDATE activity SET name='$n', company = , product, type, status, timestamp) VALUES ('$n', $c, $p, '$t', '$s', $tt)";
+        $sql = "UPDATE activity SET name='$n', product, status, timestamp) VALUES ('$n', $c, $p, '$s', $tt)";
         return $this->db->query($sql);
     }
     */

@@ -105,6 +105,15 @@ class User extends CI_Model
       return $this->db->query($sql);
   }
   
+  public function getIdByUsername(){
+      
+      $u = $this->getUsername();
+      $sql = "SELECT id FROM user WHERE username like '$u'";
+      $r = $this->db->query($sql)->row();
+      $this->setId($r->id);
+      
+  }
+  
   //returns 0 if not valid, 1 if valid
   public function validate(){
       $u = $this->getUsername();
