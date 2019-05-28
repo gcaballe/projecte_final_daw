@@ -32,11 +32,11 @@ class Product extends CI_Model
     }
     
     public function setName($param){
-        $this->name = $param;
+        $this->name = str_replace("'", "\'", $param);
     }
     
     public function setDescription($param){
-        $this->description = $param;
+        $this->description = str_replace("'", "\'", $param);
     }
 
     
@@ -74,11 +74,12 @@ class Product extends CI_Model
     }
 	
     public function insert(){
-        //id és autocomplete
-        $p = $this->getCompany();
+        $id = $this->getId();
+        $c = $this->getCompany();
         $n = $this->getName();
         $d = $this->getDescription();
-        $sql = "INSERT INTO product (company, name, description) VALUES ($c, '$n', '$d')";
+        if($id == null) $sql = "INSERT INTO product (company, name, description) VALUES ($c, '$n', '$d')";
+        else $sql = "INSERT INTO product (id, company, name, description) VALUES ($id, $c, '$n', '$d')";
         return $this->db->query($sql);
     }
     

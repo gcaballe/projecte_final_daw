@@ -100,8 +100,8 @@ class Review extends CI_Model
         return $this->db->query($sql);
     }
     
-    /**
-    deletes a review, or an enrollment
+    /*
+    /*deletes a review, or an enrollment
     */
     public function delete_review(){
         $u = $this->getUser();
@@ -122,7 +122,7 @@ class Review extends CI_Model
             $a = $act->getId();
             $sql = "SELECT enrolled FROM review WHERE user = $user_id AND activity = $a";
             
-            if($r = $CI->db->query($sql)->row()) $arr[] = $r->enrolled;
+            if($r = $CI->db->query($sql)->row()) $arr[$a] = $r->enrolled;
         }
         return $arr;
         
@@ -155,5 +155,30 @@ class Review extends CI_Model
         return $arr;
     }*/
 
+    /** returns array of Review objects */
+    public static function getReviewsOfActivities($arr_act){
+        $CI =& get_instance();
+
+        $arr = array();
+        foreach($arr_act as $act){
+            $sql = "SELECT * from review where enrolled = 1 AND activity = " . $act->getId();
+            
+            $result = $CI->db->query($sql)->result();
+            
+            $arr_rev = array();
+            foreach ($result as $r){
+                $rev = new Review($r->user, $r->activity, $r->enrolled, $r->rating, $r->text);
+                $arr_rev[] = $rev;
+            }
+            $arr[$act->getId()] = $arr_rev;
+        }
+        return $arr;
+    }
+
+    public static function find($array, $user_id){
+        foreach ($array as $rev){
+            if($rev->getUser() == $user_id) return $rev;
+        }
+    }
 }
 ?>

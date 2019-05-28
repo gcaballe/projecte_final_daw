@@ -10,18 +10,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	</style>
     
-    
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <!-- tot aixo hauria de anar a un include -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap-4.3.1-dist/css/bootstrap.css')?>" >
+	<script src="<?php echo base_url('assets/bootstrap-4.3.1-dist/js/jquery-3.4.1.min.js') ?>"></script>
+  <script src="<?php echo base_url('assets/bootstrap-4.3.1-dist/js/bootstrap.min.js') ?>"></script>
+
 </head>
 <body>
 
-
-<a href="<?php echo site_url("client/logout/")?>"><button class="btn btn-primary">Logout!</button></a>
-
+  <?php
+    $this->load->view('header');
+  ?>
 
 <div id="container">
 	<h1>Welcome to client panel</h1>
@@ -32,9 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         <div class="accordion" id="accordionListActivities">
         
-        <?php
-        
-        
+        <?php       
             $i = 0;
             foreach($activities as $act){
                 
@@ -59,8 +56,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php echo $act->getProduct()->getDescription(); ?><br>
                 
                 <!-- botó enroll, unenroll -->
-                <a href="<?php echo site_url("client/enroll/" . $act->getId()) ?>"><button class="btn btn-primary">Enroll!</button></a>
-                <a href="<?php echo site_url("client/undo_enroll/" . $act->getId()) ?>"><button class="btn btn-danger">Undo!</button></a>
+				<?php
+				if(!isset($enrollments[$act->getId()])){				
+					echo "<a href='" . site_url("client/enroll/" . $act->getId()) . "'><button class='btn btn-primary'>Enroll!</button></a>";
+				}else{
+					echo "<a href='" . site_url("client/undo_enroll/" . $act->getId()) . "'><button class='btn btn-danger'>Undo!</button></a>";
+				}
+				?>
+                
+                
               </div>
             </div>
           </div>
@@ -122,8 +126,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
 	</div>
 
-	<p class="footer">Footer</p>
 </div>
+
+  <?php
+    $this->load->view('footer');
+  ?>
 
 </body>
 </html>

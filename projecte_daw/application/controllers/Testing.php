@@ -3,32 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Testing extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 	public function index()
 	{
+		
+		echo "Test de CSV reader:";
 
-    
-        $p = Product::get(3);
-        
-        echo $p->toString();
-        
-            echo "estas a testing index";
-        exit;
-        
-		//$this->load->view('welcome_message');
+		echo "<form>
+		
+		
+		</form>";
+		
+		$row = 1;
+		$arrResult  = array();
+		if (($handle = fopen("ifsc_code.csv", "r")) !== FALSE) {
+			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+				$num = count($data);
+				DB::table('banks')->insert(
+					array('bank_name' => $data[1], 'ifsc' => $data[2], 'micr' => $data[3], 'branch_name' => $data[4],'address' => $data[5], 'contact' => $data[6], 'city' => $data[7],'district' => $data[8],'state' => $data[9])
+				);
+			}
+			fclose($handle);
+		}
+
+
 	}
 }

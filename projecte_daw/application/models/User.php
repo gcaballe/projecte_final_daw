@@ -20,14 +20,16 @@ class User extends CI_Model
   private $email;
   
   /*TO-DO + info*/
-  
+  private $activated;
+
   //integer
   private $role; 
   
-  function __construct($paramUsername = null, $paramPassword = null, $paramEmail = null, $paramRole = null) {
+  function __construct($paramId = null, $paramUsername = null, $paramPassword = null, $paramEmail = null, $paramRole = null) {
     
     parent::__construct();
     
+    $this->setId($paramId);
     $this->setUsername($paramUsername);
     $this->setPassword($paramPassword);
     $this->setEmail($paramEmail);
@@ -57,6 +59,10 @@ class User extends CI_Model
   public function setRole($param){
       $this->role = $param;
   }
+
+  public function setActivated($param){
+      $this->activated = $param;
+  }
   
   function getUsername(){
     return $this->username;
@@ -72,6 +78,10 @@ class User extends CI_Model
   
   public function getRole(){
       return $this->role;
+  }
+
+  public function getActivated(){
+      return $this->activated;
   }
   
   
@@ -104,6 +114,12 @@ class User extends CI_Model
       $sql = "INSERT INTO user (username, password, email, role) VALUES ('$u','$p','$e',$r)";
       return $this->db->query($sql);
   }
+
+  public static function activate_user($code){
+	  $CI =& get_instance();
+	  $sql = "UPDATE user SET activated = 1 WHERE '$code' = MD5( CONCAT( MD5(username), MD5(password) ) );";
+	  return $CI->db->query($sql);
+  }
   
   public function getIdByUsername(){
       
@@ -118,14 +134,15 @@ class User extends CI_Model
   public function validate(){
       $u = $this->getUsername();
       $p = $this->getPassword();
-      $sql = "SELECT id, username, email, role FROM user WHERE username like '$u' AND password like '$p'";
+      $sql = "SELECT id, username, email, role, activated FROM user WHERE username like '$u' AND password like '$p'";
       $r = $this->db->query($sql)->row();
 
       if($r != null) {
-        $this->setId($r->id);
-        $this->setEmail($r->email);
-        $this->setRole($r->role);
-        return 1;
+			$this->setId($r->id);
+			$this->setEmail($r->email);
+			$this->setRole($r->role);
+			$this->setActivated($r->activated);
+			return 1;
       }else{
           return 0;
       }

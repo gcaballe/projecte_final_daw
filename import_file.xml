@@ -1,0 +1,40 @@
+<data>
+    <products>
+        <product id="20">
+            <name>Pernil york</name>
+            <description>Un pernil de X denominació d'origen, molt bó.</description>
+        </product>
+        <product id="21">
+            <name>Formatge de cabra</name>
+            <description>De les cabres més simpàtiques dels pirineus.</description>
+        </product>
+        <product id="22">
+            <name>Vi del penedès 95</name>
+            <description>La collita del 95 és una collita excepcional.</description>
+        </product>
+        <product id="23">
+            <name>Vi barato</name>
+            <description>Excel·lent per fer calimotxos després d'una setmana intensa de projecte.</description>
+        </product>
+    </products>
+    <activities>
+        <activity>
+            <name>Tast de Pernil Dolç</name>
+            <product>20</product>
+            <description>Es combinara amb encara més pernil.</description>
+            <timestamp>2019-05-28 20:00:00</timestamp>
+        </activity>
+        <activity>
+            <name>Tast de formatge</name>
+            <product>21</product>
+            <description>Es repartirán mostres per mportar.</description>
+            <timestamp>2019-05-29 15:30:00</timestamp>
+        </activity>
+        <activity>
+            <name>Tast de Pernil Dolç 2</name>
+            <product>20</product>
+            <description>També hi hauràn bocatas.</description>
+            <timestamp>2019-05-30 10:00:00</timestamp>
+        </activity>
+    </activities>
+</data>

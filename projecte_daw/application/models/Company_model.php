@@ -19,14 +19,17 @@ class Company_model extends CI_Model
   private $user;
   
   //address 
-  private $address;
+  private $lat;
+
+  private $lng;
   
-  function __construct($paramName = null, $paramCif = null, $paramUser = null, $paramAddress = null) {
+  function __construct($paramName = null, $paramCif = null, $paramUser = null, $paramLat = null, $paramLng = null) {
       parent::__construct();
       $this->setName($paramName);
       $this->setCif($paramCif);
       $this->setUser($paramUser);
-      $this->setAddress($paramAddress);
+      $this->setLat($paramLat);
+      $this->setLng($paramLng);
   }
   
   //setter
@@ -46,8 +49,12 @@ class Company_model extends CI_Model
       $this->user = $param;
   }
   
-  public function setAddress($param){
-      $this->address = $param;
+  public function setLat($param){
+      $this->lat = $param;
+  }
+
+  public function setLng($param){
+      $this->lng = $param;
   }
   
   
@@ -69,9 +76,13 @@ class Company_model extends CI_Model
       return $this->user;
   }
   
-  public function getAddress(){
-      return $this->address;
+  public function getLat(){
+      return $this->lat;
   }
+
+  public function getLng(){
+    return $this->lng;
+}
   
   
     public function insert(){
@@ -79,10 +90,18 @@ class Company_model extends CI_Model
         $n = $this->getName();
         $c = $this->getCif();
         $u = $this->getUser();
-        $a = $this->getAddress();
+        $lat = $this->getLat();
+        $lng = $this->getLng();
 
-        $sql = "INSERT INTO company (name, cif, user, address) VALUES ('$n','$c', $u, '$a')";
+        $sql = "INSERT INTO company (name, cif, user, lat, lng) VALUES ('$n','$c', $u, $lat, $lng)";
         return $this->db->query($sql);
+    }
+
+    public static function getCompanyIdByUserId($id){
+        $CI =& get_instance();
+        $sql = "SELECT * FROM company WHERE user = $id";
+        $r = $CI->db->query($sql)->row();
+        return $r->id;
     }
 	
 }

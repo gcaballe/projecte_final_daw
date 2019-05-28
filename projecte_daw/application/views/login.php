@@ -7,8 +7,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<title>Welcome to CodeIgniter</title>
 
 	<style type="text/css">
-
+      #map {
+        height: 200px;
+        width: 400px;
+      }
 	</style>
+
+    
 </head>
 <body>
 
@@ -69,14 +74,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <p>Info de company:</p>
             
             <label for="company_name" >Company name:<br></label>
-            <input type="text" id="company_name" name="company_name"/>
+            <input type="text" id="company_name" name="company_name"/><br>
             
             <label for="cif" >CIF:<br></label>
-            <input type="text" id="cif" name="cif"/>
+            <input type="text" id="cif" name="cif"/><br>
             
-            <label for="address" >Adress:<br></label>
-            <input type="text" id="address" name="address" />
+            <label for="map" >Localitzation:<br></label>
             
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lng" id="lng">
+
+            
+
+            <div id="map"></div>
+            
+            <script>
+            
+            var map;
+            var marker = false;
+                    
+            function initMap() {
+            
+                var centerOfMap = new google.maps.LatLng(41.586,1.591);
+            
+                var options = {
+                center: centerOfMap,
+                zoom: 7
+                };
+
+                map = new google.maps.Map(document.getElementById('map'), options);
+            
+                google.maps.event.addListener(map, 'click', function(event) {                
+                    //Get the location that the user clicked.
+                    var clickedLocation = event.latLng;
+                    //If the marker hasn't been added.
+                    if(marker === false){
+                        //Create the marker.
+                        marker = new google.maps.Marker({
+                            position: clickedLocation,
+                            map: map,
+                            draggable: true //make it draggable
+                        });
+                        //Listen for drag events!
+                        google.maps.event.addListener(marker, 'dragend', function(event){
+                            markerLocation();
+                        });
+                    } else{
+                        //Marker has already been added, so just change its location.
+                        marker.setPosition(clickedLocation);
+                    }
+                    //Get the marker's location.
+                    markerLocation();
+                });
+            }
+                    
+            //This function will get the marker's current location and then add the lat/long
+            //values to our textfields so that we can save the location.
+            function markerLocation(){
+                //Get location.
+                var currentLocation = marker.getPosition();
+                //Add lat and lng values to a field that we can save.
+                document.getElementById('lat').value = currentLocation.lat(); //latitude
+                document.getElementById('lng').value = currentLocation.lng(); //longitude
+            }
+            
+            </script>
+
+            <?php $key = "AIzaSyC_RzZ21aBuLLg_Z8TEw0M6a0Psz8eM5Tc";?>
+
+            <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $key; ?>&callback=initMap"
+            async defer></script>
+
+            
+
             <input type="submit" value="Register" />
         
         </form>

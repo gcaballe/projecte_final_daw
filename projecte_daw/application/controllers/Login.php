@@ -14,12 +14,17 @@ class Login extends CI_Controller {
         $p = $this->input->post('password');
         
         //user object
-        //$user = new User($u, $p, null, null);
-        $user = new User($u, $p, null, null);       
+        $user = new User(null, $u, $p, null, null);       
         
         
         if($user->validate()){
-            echo "user valid: " . $user->toString();
+            //echo "user valid: " . $user->toString();
+
+			if($user->getActivated() == NULL) {
+				echo "User is still not activated. Check your email: " . $user->getEmail();
+				exit;
+			}
+
             $this->session->user = serialize($user);
             
             //envio al panell d'user o de company
@@ -40,45 +45,109 @@ class Login extends CI_Controller {
         $p = $this->input->post('password');
         $e = $this->input->post('email');
         
-        $user = new User($u, $p, $e, 2);
+        $user = new User(null, $u, $p, $e, 2);
         
-        $u->insert();
-        
-        //to-do: mail verification al registrar?
-        
+		//atribute 'activated' is NULL
+        $user->insert();
+
+
+        $config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'guillemcaballe95@gmail.com',
+			'smtp_pass' => 'cadira1995',
+			'mailtype'  => 'html', 
+			'charset'   => 'iso-8859-1'
+		);
+
+		$this->load->library('email', $config);
+		$this->email->set_newline("\r\n");
+
+		$this->email->from('no_reply@infomila.info', 'NO REPLY');
+		$this->email->to($user->getEmail());
+
+		$this->email->subject('Account registration confirmation');
+
+		//creo un codi
+
+		$code = md5( md5($user->getUsername()) . md5($user->getPassword()) );
+
+		$url = site_url("login/confirm_user/$code");
+
+		$this->email->message('To activate this account, click on this link.' . "\n$url");
+
+		$result = $this->email->send();
+
+		redirect('Login/index');
     }
+
+	public function confirm_user($code){
+		$r = User::activate_user($code);
+		redirect('Login/index');
+	}
     
     /** Register a acompany
     */
     public function register_company(){
-        
+		
         $u = $this->input->post('username');
         $p = $this->input->post('password');
         $e = $this->input->post('email');
         
         $cn = $this->input->post('company_name');
         $c = $this->input->post('cif');
-        $a = $this->input->post('address');
+		$lat = $this->input->post('lat');
+		$lng = $this->input->post('lng');
         
-        $user = new User($u, $p, $e, 1);
+        $user = new User(null, $u, $p, $e, 1);
         $user->insert();
         
-        echo $user->toString();
-        
+
         $user->getIdByUsername();
-        
-        echo $user->toString();
-        
-        
-        
-        $company = new Company_model($cn, $c, $user->getId(), $a);
+
+        $company = new Company_model($cn, $c, $user->getId(), $lat, $lng);
         
         $company->insert();        
         
-        //to-do: mail verification al registrar?
+        $config = Array(
+			'protocol' => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_port' => 465,
+			'smtp_user' => 'guillemcaballe95@gmail.com',
+			'smtp_pass' => 'cadira1995',
+			'mailtype'  => 'html', 
+			'charset'   => 'iso-8859-1'
+		);
+
+		$this->load->library('email', $config);
+		$this->email->set_newline("\r\n");
+
+		$this->email->from('no_reply@infomila.info', 'NO REPLY');
+		$this->email->to($user->getEmail());
+
+		$this->email->subject('Account registration confirmation');
+
+		//creo un codi
+
+		$code = md5( md5($user->getUsername()) . md5($user->getPassword()) );
+
+		$url = site_url("login/confirm_user/$code");
+
+		$this->email->message('To activate this account, click on this link.' . "\n$url");
+
+		$result = $this->email->send();
         
+		redirect('Login/index');
     }
-    
+	
+	public function logout(){
+        
+        session_destroy();
+        redirect('Login/index');
+        
+	}
+	
     public function error(){
         
         echo "Wrong credentials. try again";exit;

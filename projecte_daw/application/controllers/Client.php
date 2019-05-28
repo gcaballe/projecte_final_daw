@@ -16,13 +16,14 @@ class Client extends CI_Controller {
 
         $data['enrollments'] = Review::getEnrollments($user->getId(), $data['activities']);
 
+//		var_dump($data['enrollments']);exit;
         $this->load->view('client', $data);
 	}
     
     public function enroll($activity_id){
         
-        $u = 1; //agafo del session
-        $review = new Review($u, $activity_id, 1, null, null);
+        $user = unserialize($this->session->user);
+        $review = new Review($user->getId(), $activity_id, 1, null, null);
         
         echo $review->toString();
         

@@ -13,18 +13,18 @@ class Activity extends CI_Model
     private $product;
     private $description;
     private $status;
-    private $date;
     private $timestamp;
     
     //constructor with id
-    function __construct($id = null, $name = null, $product = null, $description = null, $timestamp = null) {
+    function __construct($id = null, $name = null, $product = null, $description = null, $status = null, $timestamp = null) {
         
         parent::__construct();
         $this->setId($id);
         $this->setName($name);
         $this->setProduct($product);
         $this->setDescription($description);
-        $this->setStatus("open");
+        if($status == null) $this->setStatus("open");
+        else $this->setStatus($status);
         $this->setTimestamp($timestamp);
         if($timestamp == null) $this->setTimestamp(time());
     }
@@ -81,19 +81,21 @@ class Activity extends CI_Model
         return $this->timestamp;
     }
   
-    /*
-    public function getTimestampString(){
+    
+    /*public function getTimestampString(){
         return gmdate('Y-m-d h:i:s \G\M\T', $this->getTimestamp());
-    }
-    */
+    }*/
+    
 
     public function toString(){
-        
         $aux = "Object Activity:<br>";
 
         $aux .= "Id: ".$this->getId()."<br>";
         $aux .= "Name: ".$this->getName()."<br>";
-        $aux .= "Product: ".$this->getProduct()."<br>";
+
+        if($this->getProduct() instanceof Product) $aux .= "<br>Product: ".$this->getProduct()->toString()."<br>";
+        else $aux .= "Product: ".$this->getProduct()."<br>";
+
         $aux .= "Description: ".$this->getDescription()."<br>";
         $aux .= "Status: ".$this->getStatus()."<br>";
         $aux .= "Timestamp: ".$this->getTimestamp()."<br>";
@@ -107,7 +109,7 @@ class Activity extends CI_Model
         $d = $this->getDescription();
         $s = $this->getStatus();
         $tt = $this->getTimestamp();
-        $sql = "INSERT INTO activity (name, product, description, status, timestamp) VALUES ('$n', $p, '$d', '$s', $tt)";
+        $sql = "INSERT INTO activity (name, product, description, status, timestamp) VALUES ('$n', $p, '$d', '$s', TIMESTAMP('$tt'))";
         return $this->db->query($sql);
     }
     
@@ -153,7 +155,10 @@ class Activity extends CI_Model
         
         $arr = array();
         foreach ($result as $r){
-            $a = new Activity($r->id, $r->name, $r->product, $r->description, $r->status, $r->timestamp);
+            
+            $p = Product::get($r->product);
+
+            $a = new Activity($r->id, $r->name, $p, $r->description, $r->status, $r->timestamp);
             $arr[] = $a;
         }
         return $arr;
@@ -170,17 +175,43 @@ class Activity extends CI_Model
         
         $arr = array();
         foreach ($result as $r){
-            $a = new Activity($r->id, $r->name, $r->product, $r->description, $r->status, $r->timestamp);
+
+            $p = Product::get($r->product);
+            
+            $a = new Activity($r->id, $r->name, $p, $r->description, $r->status, $r->timestamp);
             $arr[] = $a;
         }
         return $arr;
     }
-    
-    /*
-    public function update($id){
-        $sql = "UPDATE activity SET name='$n', product, status, timestamp) VALUES ('$n', $c, $p, '$s', $tt)";
-        return $this->db->query($sql);
+
+    /** returns array of User objects */
+    public static function getEnrolledUsers($arr_act){
+        $CI =& get_instance();
+
+        $arr = array();
+        foreach($arr_act as $act){
+            $sql = "SELECT id, username, email FROM user WHERE id IN (
+                SELECT user from review where enrolled = 1 AND activity = " . $act->getId() .
+            ")";
+            
+            $result = $CI->db->query($sql)->result();
+            
+            $arr_u = array();
+            foreach ($result as $r){
+                $u = new User($r->id, $r->username, null, $r->email, null);
+                $arr_u[] = $u;
+            }
+            $arr[$act->getId()] = $arr_u;
+        }
+        return $arr;
     }
-    */
+    
+    
+    public static function update_status($id, $status){
+        $CI =& get_instance();
+        $sql = "UPDATE activity SET status = '$status' WHERE id = $id";
+        return $CI->db->query($sql);
+    }
+    
 }
 ?>
