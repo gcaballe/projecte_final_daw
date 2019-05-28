@@ -27,3 +27,4 @@
     review (#user, #activity *, rating (1-5), text)
     
             FK: user (id)    FK: activity (id)
+            
