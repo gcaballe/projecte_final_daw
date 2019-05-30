@@ -6,156 +6,194 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Welcome to CodeIgniter</title>
 
-	<style type="text/css">
-      #map {
-        height: 200px;
-        width: 400px;
-      }
-	</style>
+	<?php
+		$this->load->view('head_includes');
+	?>	
 
     
+	<!-- google maps shit -->
+	<?php $key = "AIzaSyC_RzZ21aBuLLg_Z8TEw0M6a0Psz8eM5Tc";?>
+	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $key; ?>&callback=initMap"
+	async defer></script>
+
+	<script>
+            
+		var map;
+		var marker = false;
+                    
+		function initMap() {
+            
+			var centerOfMap = new google.maps.LatLng(41.586,1.591); //Igualada
+            
+			var options = {
+				center: centerOfMap,
+				zoom: 7
+			};
+
+			map = new google.maps.Map(document.getElementById('map'), options);
+            
+			google.maps.event.addListener(map, 'click', function(event) {                
+				var clickedLocation = event.latLng;
+				if(marker === false){
+					marker = new google.maps.Marker({
+						position: clickedLocation,
+						map: map,
+						draggable: true //make it draggable
+					});
+					google.maps.event.addListener(marker, 'dragend', function(event){
+						markerLocation();
+					});
+				} else{
+					marker.setPosition(clickedLocation);
+				}
+				markerLocation();
+			});
+		}
+
+		function markerLocation(){
+			var currentLocation = marker.getPosition();
+			document.getElementById('lat').value = currentLocation.lat();
+			document.getElementById('lng').value = currentLocation.lng();
+		}
+            
+	</script>
+
+	<script>
+		//no puc posar aquesta funcio a scripts.js per que té php echo's
+		//el swtich de si ets company o No
+		function imcompany(){
+			var d = document.getElementById('info_company');
+			console.info(d.style.display);
+			if(d.style.display == "none" || d.style.display == ""){
+				d.style.display = "block";
+				form_register.action="<?php echo site_url("login/register_company") ?>";
+			}else{
+				d.style.display = "none";
+				form_register.action="<?php echo site_url("login/register_user") ?>";
+			}
+		}
+
+	</script>
+
+	<!-- aquest style esta separat xk nomès s'utilitza aqui, aixi no el carrego cada cop -->
+	<link rel="stylesheet" href="<?php echo base_url() . "assets/login_style.css"; ?>">
+
 </head>
-<body>
+<body class="area">
 
-<div id="container">
-	<h1>Welcome to projecte DAW!</h1>
+	<?php
+		$this->load->view('header');
+	?>
 
-	<div id="content">
+	<!-- copes al background -->
+    <ul class="cubs_voladors">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+    </ul>
+
+	<div id="container">
+	<div class="row m-5">
 		
-        <h1>login</h1>
-        <form method="post" action="<?php echo site_url("login/verify_user") ?>" >
-        
-            <label for="username" >Username:<br></label>
-            <input type="text" id="username" name="username"/>
-            
-            <label for="password" >Password:<br></label>
-            <input type="password" id="password" name="password" />
-            
-            <input type="submit" value="Login" />
-        
-        </form>
-        
-        <h1>register user</h1>
-        <form method="post" action="<?php echo site_url("login/register_user") ?>" >
-        
-            <label for="username" >Username:<br></label>
-            <input type="text" id="username" name="username"/>
-            
-            <label for="password" >Password:<br></label>
-            <input type="password" id="password" name="password" />
-            
-            <label for="password2" >Confirm password:<br></label>
-            <input type="password" id="password2" name="password2" />
-            
-            <label for="email" >Email:<br></label>
-            <input type="email" id="email" name="email" />
-            
-            <input type="submit" value="Register" />
-        
-        </form>
-        
-        
-        <h1>register company</h1>
-        <form method="post" action="<?php echo site_url("login/register_company") ?>" >
-        
-            <label for="username" >Username:<br></label>
-            <input type="text" id="username" name="username"/>
-            
-            <label for="password" >Password:<br></label>
-            <input type="password" id="password" name="password" />
-            
-            <label for="password2" >Confirm password:<br></label>
-            <input type="password" id="password2" name="password2" />
-            
-            <label for="email" >Email:<br></label>
-            <input type="email" id="email" name="email" />
-            
-            
-            <p>Info de company:</p>
-            
-            <label for="company_name" >Company name:<br></label>
-            <input type="text" id="company_name" name="company_name"/><br>
-            
-            <label for="cif" >CIF:<br></label>
-            <input type="text" id="cif" name="cif"/><br>
-            
-            <label for="map" >Localitzation:<br></label>
-            
-            <input type="hidden" name="lat" id="lat">
-            <input type="hidden" name="lng" id="lng">
+		<div class="col-9 offset-2 col-sm-6 offset-sm-0 col-lg-4 offset-lg-2">
 
-            
-
-            <div id="map"></div>
-            
-            <script>
-            
-            var map;
-            var marker = false;
-                    
-            function initMap() {
-            
-                var centerOfMap = new google.maps.LatLng(41.586,1.591);
-            
-                var options = {
-                center: centerOfMap,
-                zoom: 7
-                };
-
-                map = new google.maps.Map(document.getElementById('map'), options);
-            
-                google.maps.event.addListener(map, 'click', function(event) {                
-                    //Get the location that the user clicked.
-                    var clickedLocation = event.latLng;
-                    //If the marker hasn't been added.
-                    if(marker === false){
-                        //Create the marker.
-                        marker = new google.maps.Marker({
-                            position: clickedLocation,
-                            map: map,
-                            draggable: true //make it draggable
-                        });
-                        //Listen for drag events!
-                        google.maps.event.addListener(marker, 'dragend', function(event){
-                            markerLocation();
-                        });
-                    } else{
-                        //Marker has already been added, so just change its location.
-                        marker.setPosition(clickedLocation);
-                    }
-                    //Get the marker's location.
-                    markerLocation();
-                });
-            }
-                    
-            //This function will get the marker's current location and then add the lat/long
-            //values to our textfields so that we can save the location.
-            function markerLocation(){
-                //Get location.
-                var currentLocation = marker.getPosition();
-                //Add lat and lng values to a field that we can save.
-                document.getElementById('lat').value = currentLocation.lat(); //latitude
-                document.getElementById('lng').value = currentLocation.lng(); //longitude
-            }
-            
-            </script>
-
-            <?php $key = "AIzaSyC_RzZ21aBuLLg_Z8TEw0M6a0Psz8eM5Tc";?>
-
-            <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $key; ?>&callback=initMap"
-            async defer></script>
-
-            
-
-            <input type="submit" value="Register" />
+			<form class="rounded bg-light p-4" method="post" action="<?php echo site_url("login/verify_user") ?>" >
         
-        </form>
+				<h1>Login</h1>
+
+				<div class="form-group">
+					<label for="username" >Username:</label><br>
+					<input type="text" id="username" name="username"/><br>
+				</div>
+
+				<div class="form-group">
+					<label for="password" >Password:</label><br>
+					<input type="password" id="password" name="password" /><br>
+				</div>
+
+				<input class="btn btn-primary" type="submit" value="Login" />
         
+			</form>
+
+		</div>
+
+		<div class="col-9 offset-2 col-sm-6 offset-sm-0 col-lg-4 mb-5">
         
+			<form class="rounded bg-light mb-5 p-4" id="form_register" method="post" action="<?php echo site_url("login/register_user") ?>" >
+		
+				<h1>Register</h1>
+
+				<div class="form-group">
+					<p>Are you a company?</p>
+					<label class="switch">
+					  <input id="company_switch" onChange="imcompany()" type="checkbox">
+					  <span class="slider round"></span>
+					</label>
+				</div>
+
+				<div class="form-group">
+					<label for="username" >Username:</label><br>
+					<input type="text" id="username" name="username"/><br>
+				</div>
+
+				<div class="form-group">
+					<label for="password" >Password:</label><br>
+					<input type="password" id="password" name="password" /><br>
+				</div>
+
+				<div class="form-group">
+					<label for="password2" >Confirm password:</label><br>
+					<input type="password" id="password2" name="password2" /><br>
+				</div>
+
+				<div class="form-group">
+					<label for="email" >Email:</label><br>
+					<input type="email" id="email" name="email" /><br>
+				</div>
+
+				<!-- info de company -->
+				<div id="info_company">
+
+					<h4>Company information:</h4>
+					
+					<div class="form-group">
+						<label for="company_name" >Company name:</label><br>
+						<input type="text" id="company_name" name="company_name"/><br>
+					</div>
+            
+					<div class="form-group">
+						<label for="cif" >CIF:</label><br>
+						<input type="text" id="cif" name="cif"/><br>
+					</div>
+
+					<div class="form-group">
+						<label for="map" >Localitzation:</label><br>
+            
+						<input type="hidden" name="lat" id="lat">
+						<input type="hidden" name="lng" id="lng">
+
+						<div id="map"></div><br>
+					</div>
+				</div>
+
+				<input class="btn btn-primary" type="submit" value="Register" />
+        
+			</form>
+        </div>
+
+	</div>
 	</div>
 
-	<p class="footer">Footer</p>
-</div>
+	<?php
+		$this->load->view('footer');
+	?>
 
 </body>
 </html>

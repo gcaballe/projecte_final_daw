@@ -1,5 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="<?php echo site_url("login/index");?>">Projecte Daw</a>
+<nav id="myHeader" class="navbar navbar-expand-md navbar-light bg-warning">
+  <a class="navbar-brand" href="<?php echo site_url("login/index");?>">
+  	
+	<div class=" mb-2 wineglass left">
+		<div class="wine_inside"></div>
+	</div>
+	<div class=" mb-2 wineglass right">
+		<div class="wine_inside"></div>
+	</div>
+
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

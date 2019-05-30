@@ -147,10 +147,10 @@ class Activity extends CI_Model
         
         $CI =& get_instance();
         
-        $sql_aux = "SELECT activity FROM review WHERE user = $user";
+        $sql_aux = "SELECT activity FROM review WHERE user = $user AND rating = 0 AND enrolled = 1";
 
         $sql = "SELECT * FROM activity WHERE id IN ($sql_aux) AND status = 'done'";
-        
+
         $result = $CI->db->query($sql)->result();
         
         $arr = array();

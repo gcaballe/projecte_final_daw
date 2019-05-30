@@ -15,6 +15,7 @@ class Client extends CI_Controller {
         $data['myDoneActivities'] = Activity::getAllDoneByUser($user->getId()); //user id surt de session
 
         $data['enrollments'] = Review::getEnrollments($user->getId(), $data['activities']);
+		$data['user_session'] = $user;
 
 //		var_dump($data['enrollments']);exit;
         $this->load->view('client', $data);
@@ -41,14 +42,16 @@ class Client extends CI_Controller {
         redirect('Client/index');
     }
     
-    public function rate_activity($activity_id, $rating, $text){
-        
-        $u = 1; //agafo del session
-        $review = new Review($u, $activity_id, null, $rating, $text);
+    public function rate_activity(/*$activity_id, $rating, $text*/){
+		$u = $this->input->post('user_id');
+		$a = $this->input->post('act_id');
+		$r = $this->input->post('rate');
+		$t = $this->input->post('text_review');
+
+        $review = new Review($u, $a, null, $r, $t);
         $review->update_rating();
-        
         echo "updated";
-        
+		 redirect('Client/index');
     }
     
     public function logout(){

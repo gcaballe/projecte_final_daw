@@ -40,7 +40,7 @@ class Login extends CI_Controller {
     /** Register a user, not a company
     */
     public function register_user(){
-        
+
         $u = $this->input->post('username');
         $p = $this->input->post('password');
         $e = $this->input->post('email');
@@ -90,7 +90,7 @@ class Login extends CI_Controller {
     /** Register a acompany
     */
     public function register_company(){
-		
+
         $u = $this->input->post('username');
         $p = $this->input->post('password');
         $e = $this->input->post('email');
