@@ -98,8 +98,11 @@ class Company extends CI_Controller {
                 $act->insert();
             }
         }
+        redirect('Company/index');
+        /*
         echo "Inserted $numProd products and $numAct activities";
-        exit;
+        echo "<a href='" . site_url('Company/index') . "'><button>Back.</button></a>";
+        */
     }
 
     public function logout(){
