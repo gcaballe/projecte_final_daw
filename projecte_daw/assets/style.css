@@ -9,3 +9,97 @@ body {
 #client_container {
 	margin-bottom: 150px;
 }
+
+
+
+/* loading logo */
+
+div#page_content{
+	display:none;
+}
+
+.cheese_loader {
+	background-color: #FEE37F;
+	width: 50vmin;
+	height: 50vmin;
+	position: relative;
+	margin: auto;
+	top: 30vmin;
+	border-radius: 1vmin;
+	border-bottom: solid 1vmin #fcc602;
+	border-right: solid 1vmin #fcc602;
+	
+	animation: spin 4s linear infinite;
+  }
+  
+  .cheese_loader:after {
+	content: "";
+	display: block;
+	width: 8vmin;
+	height: 8vmin;
+	background-color: #fcc602;
+	border-radius: 8vmin;
+	position: absolute;
+	z-index: 9999;
+	left: 13vmin;
+	top: 8vmin;
+	box-shadow:   -8vmin 22vmin 0 -1vmin #fcc602,
+				  15vmin 10vmin 0 1.5vmin #fcc602,
+				  20vmin -10vmin 0 1.5vmin #ede13d,
+				  19vmin -8.7vmin 0 1.3vmin #fcc602,
+				  34.5vmin 12vmin 0 1.5vmin #ede13d,
+				  33.2vmin 11.9vmin 0 1.35vmin #fcc602,
+				  -7vmin 41vmin 0 3.5vmin #ede13d,
+				  -7vmin 39.5vmin 0 3.2vmin #fcc602,
+				  4vmin 32vmin 0 -0.6vmin #ede13d,
+				  4vmin 31vmin 0 -0.6vmin #fcc602;
+  }
+
+
+  @keyframes spin {
+	0% { transform: rotate(0deg) scale(0.3); }
+	100% { transform: rotate(360deg) scale(0.1); }
+  }
+
+
+
+
+
+
+  /* focus different */
+
+  input[type='text']:focus { 
+	background-color: #89e5cd;
+	}
+	
+	input[type='password']:focus { 
+		background-color: #89e5cd;
+	}
+
+	input[type='email']:focus { 
+		background-color: #89e5cd;
+	}
+
+
+  /* strong passwrod */
+
+    #result_strong_password.short{
+	font-weight:bold;
+	color:#FF0000;
+	font-size:larger;
+	}
+	#result_strong_password.weak{
+	font-weight:bold;
+	color:orange;
+	font-size:larger;
+	}
+	#result_strong_password.good{
+	font-weight:bold;
+	color:#2D98F3;
+	font-size:larger;
+	}
+	#result_strong_password.strong{
+	font-weight:bold;
+	color: limegreen;
+	font-size:larger;
+	}

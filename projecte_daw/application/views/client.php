@@ -57,6 +57,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
+<!-- loading animation -->
+<div id="loader" class="cheese_loader"></div>
+<div id="page_content">
+<script>
+	onload_function();
+</script>
+
   <?php
     $this->load->view('header');
   ?>
@@ -71,6 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
 			<?php       
 				$i = 0;
+				$mesos = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
 				foreach($activities as $act){
                 
 			?>
@@ -78,20 +86,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			  <div class="card">
 				<div class="card-header" id="heading<?php echo $i; ?>">
 				  <div class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
+					<button class="btn w-100" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
 					  <!-- data dins del boto llista -->
-					  #<?php echo $i; ?>
-					  <?php echo $act->getName(); ?>  ---- <?php echo $act->getTimestamp(); ?>
+						<div class="row">
+							<div class="col-1">#<?php echo $i; ?></div>
+							<div class="col-3"><?php echo $act->getName(); ?></div>
+							<div class="col-4 offset-4">
+									<?php
+										$d = date_parse($act->getTimestamp());
+										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . " i " . $d['minute'] . " minuts.";
+									?>
+							</div>
+						</div>
 					</button>
 				  </div>
 				</div>
 
 				<div id="collapse<?php echo $i; ?>" class="collapse" aria-labelledby="heading<?php echo $i; ?>" data-parent="#accordionListActivities">
 				  <div class="card-body">
-					<?php echo $act->getStatus(); ?><br>
-					<?php echo $act->getDescription(); ?><br>
-					<?php echo $act->getProduct()->getName(); ?><br>
-					<?php echo $act->getProduct()->getDescription(); ?><br>
+
+					<p><?php echo $act->getDescription(); ?></p>
+					<p>Producte a tastar: <?php echo $act->getProduct()->getName(); ?></p>
+					<p><?php echo $act->getProduct()->getDescription(); ?></p>
                 
 					<!-- botó enroll, unenroll -->
 					<?php
@@ -140,7 +156,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<div>
 								<!-- info del producte-->
-								<p><?php echo $act->getProduct()->getName(); ?></p>
+								<p>Vas tastar: <?php echo $act->getProduct()->getName(); ?></p>
 								<p><?php echo $act->getProduct()->getDescription(); ?></p>
 							</div>
 

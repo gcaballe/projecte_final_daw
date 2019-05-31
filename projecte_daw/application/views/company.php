@@ -20,6 +20,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
+<!-- loading animation -->
+<div id="loader" class="cheese_loader"></div>
+<div id="page_content">
+<script>
+	onload_function();
+</script>
+
   <?php
     $this->load->view('header');
   ?>
@@ -85,76 +92,90 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
 			<?php       
 				$i = 0;
+				$mesos = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
 				foreach($activities as $act){ 
 			?>
 			  <div class="card">
 				<div class="card-header" id="heading<?php echo $i; ?>">
 				  <div class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
-					  <!-- data dins del boto llista -->
-					  #<?php echo $i; ?>
-					  <?php echo $act->getName(); ?>  ---- <?php echo $act->getTimestamp(); ?>
-					</button>
+						<button class="w-100 btn" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
+						<!-- data dins del boto llista -->
+						<div class="row">
+							<div class="col-1">#<?php echo $i; ?></div>
+							<div class="col-3"><?php echo $act->getName(); ?></div>
+							<div class="col-2 offset-4">
+									<?php
+										$d = date_parse($act->getTimestamp());
+										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . " i " . $d['minute'] . " minuts.";
+									?>
+							</div>
+						</div>
+						</button>
 				  </div>
 				</div>
 
 				<div id="collapse<?php echo $i; ?>" class="collapse" aria-labelledby="heading<?php echo $i; ?>" data-parent="#accordionListMyActivities">
 				  <div class="card-body row">
-					<div class="col-6">
-					  Status: <?php echo $act->getStatus(); ?><br>
-					  Description:<br> <?php echo $act->getDescription(); ?><br>
-					  Product:<br>
-					  <?php echo $act->getProduct()->getName(); ?><br>
-					  <?php echo $act->getProduct()->getDescription(); ?><br>
-					</div>
+						<div class="col-4">
+							Description:<br> <?php echo $act->getDescription(); ?><br>
+							Product:<br>
+							<?php echo $act->getProduct()->getName(); ?><br>
+							<?php echo $act->getProduct()->getDescription(); ?><br>
+						</div>
 
-					<div class="col-6">
-                  
-					  <p>Users enrolled</p>
-					  <table class="table">
-					  <tr>
-						<th>Name</th>
-						<th>Mail</th>
-						<?php if($act->getStatus() == "done" || $act->getStatus() == "closed") echo "<th>Rating</th><th>Review</th>"; ?>
-					  </tr>
-					  <?php 
-						foreach ($enrolled_users[$act->getId()] as $u ){
-						  echo "<tr>
-							<td>" . $u->getUsername() . "</td>
-							<td>" . $u->getEmail() . "</td>";
-							/* TO-DO combinar enrolled users i ratings */
+						<div class="col-8">
+										
+							<p>Users enrolled</p>
+							<table class="table">
+							<tr>
+							<th>Name</th>
+							<th class='d-none d-md-block'>Mail</th>
+							<?php if($act->getStatus() == "done" || $act->getStatus() == "closed") echo "<th>Rating</th><th>Review</th>"; ?>
+							</tr>
+							<?php 
+							foreach ($enrolled_users[$act->getId()] as $u ){
+								echo "<tr>
+								<td>" . $u->getUsername() . "</td>
+								<td class='d-none d-md-block'>" . $u->getEmail() . "</td>";
+								/* TO-DO combinar enrolled users i ratings */
 
-							if($act->getStatus() == "done" || $act->getStatus() == "closed"){
-							  //$rev = Review::find($ratings[$act->getId()], $u->getId());
-							  foreach($ratings[$act->getId()] as $rev){
-								if($rev->getUser() == $u->getId()) {
-									echo "<td>";
-									for($z = 0; $z < $rev->getRating(); $z++){
-										echo "<i class='fas fa-star text-warning'></i>";
+								if($act->getStatus() == "done" || $act->getStatus() == "closed"){
+									//$rev = Review::find($ratings[$act->getId()], $u->getId());
+									foreach($ratings[$act->getId()] as $rev){
+									if($rev->getUser() == $u->getId()) {
+										echo "<td>";
+										for($z = 0; $z < $rev->getRating(); $z++){
+											echo "<i class='fas fa-star text-warning'></i>";
+										}
+										echo "</td>";
+										echo "<td>" . $rev->get_text() . "</td>";
 									}
-									echo "</td>";
-									echo "<td>" . $rev->get_text() . "</td>";
+									}
 								}
-							  }
+								echo "</tr>";
 							}
-						  echo "</tr>";
-						}
-					  ?>
-					  </table>
-					</div>
+							?>
+							</table>
+						</div>
 					<div class="col-12">
 					  <!-- botó Mark as done / Close -->
 					  <?php
                   
 					  switch($act->getStatus()){
 						  case "open":				
-							echo "<a href='" . site_url("company/mark_as_done/" . $act->getId()) . "'><button class='btn btn-primary'>Mark as done!</button></a>";
-							break;
+								//sense ajax
+								//echo "<a href='" . site_url("company/mark_as_done/" . $act->getId()) . "'><button class='btn btn-primary'>Mark as done!</button></a>";
+								//amb ajax
+								echo "<button id='ajax_button_done" . $act->getId() . "' onClick=\"ajax_test('done', " . $act->getId() . ")\" class='btn btn-primary'>Mark as Done!</button>";
+								break;
 						  case "done":
-							echo "<a href='" . site_url("company/mark_as_closed/" . $act->getId()) . "'><button class='btn btn-danger'>Close!</button></a>";
+							//la seguent linia es sense ajax
+								//echo "<a href='" . site_url("company/mark_as_closed/" . $act->getId()) . "'><button class='btn btn-danger'>Close!</button></a>";
+								//ara ajax
+								echo "<button id='ajax_button_closed" . $act->getId() . "' onClick=\"ajax_test('closed', " . $act->getId() . ")\" class='btn btn-danger'>Close!</button>";
 							break;
 						  case "closed":
-							echo "This activity is already closed.";
+								echo "This activity is already closed.";
 							break;
 					  }
 					  ?>

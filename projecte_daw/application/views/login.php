@@ -16,6 +16,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $key; ?>&callback=initMap"
 	async defer></script>
 
+	<style>
+	.capslock { color: red; }
+	</style>
+
 	<script>
             
 		var map;
@@ -79,7 +83,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?php echo base_url() . "assets/login_style.css"; ?>">
 
 </head>
+
+<!-- loading animation -->
+
+
+
 <body class="area">
+<div id="loader" class="cheese_loader"></div>
+
+<div id="page_content">
+<script>
+	onload_function();
+</script>
+
 
 	<?php
 		$this->load->view('header');
@@ -109,13 +125,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<h1>Login</h1>
 
 				<div class="form-group">
+					<p>Hide/show password</p>
+					<label class="switch">
+					  <input id="password_switch" onChange="passwordswitch()" type="checkbox">
+					  <span class="slider round"></span>
+					</label>
+				</div>
+
+				<div class="form-group">
 					<label for="username" >Username:</label><br>
 					<input type="text" id="username" name="username"/><br>
 				</div>
 
 				<div class="form-group">
 					<label for="password" >Password:</label><br>
-					<input type="password" id="password" name="password" /><br>
+						<input type="password" id="password_login" name="password" onkeypress="capLock(event, 1)" />
+						<div id="divMayus1" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
 
 				<input class="btn btn-primary" type="submit" value="Login" />
@@ -145,12 +170,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<div class="form-group">
 					<label for="password" >Password:</label><br>
-					<input type="password" id="password" name="password" /><br>
+					<input type="password" id="password_reg" name="password" onkeypress="capLock(event,2)" />
+					<span id="result_strong_password"></span>
+					<div id="divMayus2" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
 
 				<div class="form-group">
 					<label for="password2" >Confirm password:</label><br>
-					<input type="password" id="password2" name="password2" /><br>
+					<input type="password" id="password_reg2" name="password2" onkeypress="capLock(event,3)" />
+					<div id="divMayus3" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
 
 				<div class="form-group">
@@ -194,6 +222,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php
 		$this->load->view('footer');
 	?>
-
+</div>
 </body>
 </html>
