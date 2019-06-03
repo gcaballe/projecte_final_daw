@@ -1,9 +1,14 @@
 <?php
-// **********************************************
-// Author: Guillem Caball� Tom�s
-// **********************************************
-
-// Product class
+/**
+* Product class is the product
+* Example usage:
+* Company::getCompanyIdByUserId($id)) ;
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/
 class Product extends CI_Model
 {
     //unique code
@@ -73,6 +78,12 @@ class Product extends CI_Model
         return $aux;
     }
 	
+    /*
+    * Inserts a Product object
+    * 
+    *
+    * @return True or false
+    */
     public function insert(){
         $id = $this->getId();
         $c = $this->getCompany();
@@ -83,7 +94,13 @@ class Product extends CI_Model
         return $this->db->query($sql);
     }
     
-    //returns a product object $p
+    /*
+    * Gets a product object by Id
+    * 
+    * @param int $id The id of the product you want
+    *
+    * @return True or false
+    */
     public static function get($id){
         $CI =& get_instance();
         $sql = "SELECT * FROM product WHERE id = $id";
@@ -92,7 +109,13 @@ class Product extends CI_Model
         return $p;
     }
     
-    //returns an array of product objects
+    /*
+    * Gets all products of a company
+    * 
+    * @param int $company The id of the company
+    *
+    * @return Array of product objects
+    */
     public static function getAllByCompany($company){
         //com que es method static he de fer aixo
         $CI =& get_instance();

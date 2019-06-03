@@ -1,10 +1,14 @@
 <?php
-
-// **********************************************
-// Author: Guillem Caballé Tomàs
-// **********************************************
-
-// Role class is the role of an User. It can be Administrator, Client or Company
+/**
+* Role class is the role of an User. It can be Administrator, Client or Company
+* Example usage:
+* Company::getCompanyIdByUserId($id));
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/
 class Role
 {
   

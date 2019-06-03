@@ -103,8 +103,6 @@ $(document).ready(function() {
 
 /** AJAX REQUEST */
 
-//$("button").click(function(){
-
 function ajax_test(option, act_id){
 	console.info("I'm about to mark as '"+option+"' the activity: "+act_id);
 

@@ -4,7 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Client extends CI_Controller {
 
     
-
+    /**
+    * Initial page function for the client
+    *
+    * Gets different data from the model such as activities, and activities where he is enrolled.
+    *
+    *
+    * @return void
+    */
 	public function index()
 	{
         $user = unserialize($this->session->user);
@@ -17,10 +24,17 @@ class Client extends CI_Controller {
         $data['enrollments'] = Review::getEnrollments($user->getId(), $data['activities']);
 		$data['user_session'] = $user;
 
-//		var_dump($data['enrollments']);exit;
         $this->load->view('client', $data);
 	}
     
+    /**
+    * Enrolls the user in an activity
+    *
+    *
+    * @param int $activity_id The code of the activity the client was to attend
+    *
+    * @return void
+    */
     public function enroll($activity_id){
         
         $user = unserialize($this->session->user);
@@ -34,6 +48,14 @@ class Client extends CI_Controller {
         
     }
     
+    /**
+    * Undoes the enroll the user in an activity
+    *
+    *
+    * @param int $activity_id The code of the activity the client was to attend
+    *
+    * @return void
+    */
     public function undo_enroll($activity_id){
         $user = unserialize($this->session->user);
         $review = new Review($user->getId(), $activity_id, 0, null, null);
@@ -42,7 +64,16 @@ class Client extends CI_Controller {
         redirect('Client/index');
     }
     
-    public function rate_activity(/*$activity_id, $rating, $text*/){
+    /**
+    * Rates an activity
+    *
+    *
+    * This function has no params, but gets the info (user id, act id, rate and text)
+    *   from a form via post
+    *
+    * @return void
+    */
+    public function rate_activity(){
 		$u = $this->input->post('user_id');
 		$a = $this->input->post('act_id');
 		$r = $this->input->post('rate');
@@ -54,6 +85,12 @@ class Client extends CI_Controller {
 		 redirect('Client/index');
     }
     
+    /**
+    * Logs out and destroys session data
+    *
+    *
+    * @return void
+    */
     public function logout(){
         
         session_destroy();

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Gcaballe - Projecte DAW</title>
 
 	<?php
 		$this->load->view('head_includes');
@@ -15,10 +15,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php $key = "AIzaSyC_RzZ21aBuLLg_Z8TEw0M6a0Psz8eM5Tc";?>
 	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $key; ?>&callback=initMap"
 	async defer></script>
-
-	<style>
-	.capslock { color: red; }
-	</style>
 
 	<script>
             
@@ -81,7 +77,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- aquest style esta separat xk nomès s'utilitza aqui, aixi no el carrego cada cop -->
 	<link rel="stylesheet" href="<?php echo base_url() . "assets/login_style.css"; ?>">
-
+		<style>
+			#logout_button{
+				display:none;
+			}
+		</style>
 </head>
 
 <!-- loading animation -->
@@ -125,20 +125,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<h1>Login</h1>
 
 				<div class="form-group">
-					<p>Hide/show password</p>
-					<label class="switch">
+					<label for="password_switch">
+					<p>Show password</p>
+					<div class="switch">
 					  <input id="password_switch" onChange="passwordswitch()" type="checkbox">
 					  <span class="slider round"></span>
+					</div>
 					</label>
 				</div>
 
 				<div class="form-group">
-					<label for="username" >Username:</label><br>
-					<input type="text" id="username" name="username"/><br>
+					<label for="username_l" >Username:</label><br>
+					<input type="text" id="username_l" name="username"/><br>
 				</div>
 
 				<div class="form-group">
-					<label for="password" >Password:</label><br>
+					<label for="password_login" >Password:</label><br>
 						<input type="password" id="password_login" name="password" onkeypress="capLock(event, 1)" />
 						<div id="divMayus1" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
@@ -149,17 +151,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		</div>
 
-		<div class="col-9 offset-2 col-sm-6 offset-sm-0 col-lg-4 mb-5">
+		<div class="col-9 offset-2 col-sm-6 offset-sm-0 col-lg-4 mt-2 mt-sm-0 mb-5">
         
 			<form class="rounded bg-light mb-5 p-4" id="form_register" method="post" action="<?php echo site_url("login/register_user") ?>" >
 		
 				<h1>Register</h1>
 
 				<div class="form-group">
+				  <label for="company_switch">
 					<p>Are you a company?</p>
-					<label class="switch">
-					  <input id="company_switch" onChange="imcompany()" type="checkbox">
-					  <span class="slider round"></span>
+					<div class="switch">
+							<input id="company_switch" onChange="imcompany()" type="checkbox">
+							<span class="slider round"></span>
+					</div>
 					</label>
 				</div>
 
@@ -169,14 +173,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<div class="form-group">
-					<label for="password" >Password:</label><br>
+					<label for="password_reg" >Password:</label><br>
 					<input type="password" id="password_reg" name="password" onkeypress="capLock(event,2)" />
 					<span id="result_strong_password"></span>
 					<div id="divMayus2" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
 
 				<div class="form-group">
-					<label for="password2" >Confirm password:</label><br>
+					<label for="password_reg2" >Confirm password:</label><br>
 					<input type="password" id="password_reg2" name="password2" onkeypress="capLock(event,3)" />
 					<div id="divMayus3" style="visibility:hidden">Caps Lock is on.</div> 
 				</div>
@@ -189,7 +193,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- info de company -->
 				<div id="info_company">
 
-					<h4>Company information:</h4>
+					<h2>Company information:</h2>
 					
 					<div class="form-group">
 						<label for="company_name" >Company name:</label><br>
@@ -202,7 +206,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="form-group">
-						<label for="map" >Localitzation:</label><br>
+						<p>Localitzation:</p>
             
 						<input type="hidden" name="lat" id="lat">
 						<input type="hidden" name="lng" id="lng">

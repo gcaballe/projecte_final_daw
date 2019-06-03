@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Gcaballe - Projecte DAW</title>
 
 	<?php
 		$this->load->view('head_includes');
@@ -35,11 +35,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="row m-3">
 
 		<!-- new act -->
-		<div class="p-3 rounded bg-light col-6 offset-3 col-md-4 offset-md-4 offset-lg-0">
+		<div class="p-3 rounded bg-light col-8 offset-2 col-md-6 offset-md-3 col-lg-4 offset-lg-0">
 		
 			<form method="post" action="<?php echo site_url("company/add_activity") ?>" >
 
-				<h2>Crea una nova activitat</h2>
+				<h1>Crea una nova activitat</h1>
 
 				<div class="form-group">
 					<label for="name" >Name:</label><br>
@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<!-- list act -->
 		<div class="col-12 col-lg-8">
-			<h2>List of my activities:</h2>
+			<h1>List of my activities:</h1>
 
 			<div class="accordion" id="accordionListMyActivities">
         
@@ -95,18 +95,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$mesos = ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
 				foreach($activities as $act){ 
 			?>
-			  <div class="card">
+			  <div class="card ">
 				<div class="card-header" id="heading<?php echo $i; ?>">
 				  <div class="mb-0">
 						<button class="w-100 btn" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
 						<!-- data dins del boto llista -->
 						<div class="row">
-							<div class="col-1">#<?php echo $i; ?></div>
-							<div class="col-3"><?php echo $act->getName(); ?></div>
-							<div class="col-2 offset-4">
+						  <div class="d-none d-sm-block w-10">#<?php echo $i; ?></div>
+							<div class="col-5"><?php echo $act->getName(); ?></div>
+							<div class="col-5 offset-1">
 									<?php
 										$d = date_parse($act->getTimestamp());
-										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . " i " . $d['minute'] . " minuts.";
+										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . ":";
+										if($d['minute']<10) echo "0" . $d['minute'];
+										else echo $d['minute'];
 									?>
 							</div>
 						</div>
@@ -125,13 +127,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="col-8">
 										
-							<p>Users enrolled</p>
+							<p>Users enrolled:</p>
 							<table class="table">
-							<tr>
+							<caption>
 							<th>Name</th>
 							<th class='d-none d-md-block'>Mail</th>
 							<?php if($act->getStatus() == "done" || $act->getStatus() == "closed") echo "<th>Rating</th><th>Review</th>"; ?>
-							</tr>
+							</caption>
 							<?php 
 							foreach ($enrolled_users[$act->getId()] as $u ){
 								echo "<tr>
@@ -199,7 +201,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <div class="modal-dialog" role="document">
 			<div class="modal-content">
 			  <div class="modal-header">
-				<h5 class="modal-title" id="importdataModalLabel">Importar products via CSV or XML file</h5>
+				<h2 class="modal-title" id="importdataModalLabel">Importar products via CSV or XML file</h2>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				  <span aria-hidden="true">&times;</span>
 				</button>
@@ -210,7 +212,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 					<div class="form-group">
 						Choose a file:<br>
-						<input type="file" name="dir_to_search" size="50"><br>
+						<input aria-label="select_file" type="file" name="dir_to_search" size="50"><br>
 					</div>
 
 					<input class="btn btn-primary" type="submit" value="Import" />

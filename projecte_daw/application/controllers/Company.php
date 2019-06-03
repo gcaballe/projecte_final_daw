@@ -3,6 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Company extends CI_Controller {
 
+    /**
+    * Main function of the company controller
+    *
+    *
+    * Gets different data from the model such as activities done, products of the company, etc.
+    *
+    * @return void
+    */
 	public function index()
 	{
         $user = unserialize($this->session->user);
@@ -19,6 +27,11 @@ class Company extends CI_Controller {
         
 	}
     
+    /**
+    * Adds a new activity of the company
+    *
+    * @return void
+    */
     public function add_activity(){
         
         //id ho crea la BD
@@ -49,15 +62,35 @@ class Company extends CI_Controller {
         
     }
 
+    /**
+    * Marks an activity status as 'done'
+    *
+    * @param int $act_id The identification code of the activity
+    * @return void
+    */
     public function mark_as_done($act_id){
         Activity::update_status($act_id, "done");
         redirect('Company/index');
     }
+    
+    /**
+    * Marks an activity status as 'closed'
+    *
+    * @param int $act_id The identification code of the activity
+    * @return void
+    */
     public function mark_as_closed($act_id){
         Activity::update_status($act_id, "closed");
         redirect('Company/index');
     }
     
+    /**
+    * Imports produts and activities
+    *
+    * Reads a CSV or XML file, and inserts the products or activities on that file.
+    *
+    * @return void
+    */
     public function import_data(){
         $user = unserialize($this->session->user);
         $company_id = Company_Model::getCompanyIdByUserId($user->getId());
@@ -105,6 +138,12 @@ class Company extends CI_Controller {
         */
     }
 
+    /**
+    * Logs out and destroys session data
+    *
+    *
+    * @return void
+    */
     public function logout(){
         
         session_destroy();

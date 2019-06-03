@@ -1,9 +1,16 @@
 <?php
-// **********************************************
-// Author: Guillem Caball� Tom�s
-// **********************************************
-
-// Activity class
+/**
+* Activity class is activity a company makes
+* Example usage:
+* Company::getCompanyIdByUserId($id)) {
+* print "I am an example.";
+* }
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/ 
 class Activity extends CI_Model
 {
     //unique code
@@ -86,7 +93,12 @@ class Activity extends CI_Model
         return gmdate('Y-m-d h:i:s \G\M\T', $this->getTimestamp());
     }*/
     
-
+    /**
+    * ToString
+    *
+    *
+    * @return The string representation of an object
+    */
     public function toString(){
         $aux = "Object Activity:<br>";
 
@@ -103,6 +115,11 @@ class Activity extends CI_Model
         return $aux;
     }
 	
+    /**
+    * Inserts an activity into the DB
+    *
+    * @return void
+    */
     public function insert(){
         $n = $this->getName();
         $p = $this->getProduct();
@@ -113,7 +130,13 @@ class Activity extends CI_Model
         return $this->db->query($sql);
     }
     
-    //returns an activity object
+    /**
+    * Queries the DB to get the info of an activity
+    *
+    * @param the id of the activity
+    *
+    * @return An activity object
+    */
     public function get($id){
         $sql = "SELECT * FROM activity WHERE id = $id";
         $r = $this->db->query($sql)->row();
@@ -121,7 +144,12 @@ class Activity extends CI_Model
         return $a;
     }
     
-    //returns an array of activity objects, TO-DO implement filters
+    /**
+    * Queries the DB to get all the activities that are open
+    *
+    *
+    * @return an array of activity objects that are open
+    */
     public static function getAllOpen(){
         
         $CI =& get_instance();
@@ -142,7 +170,13 @@ class Activity extends CI_Model
     }
     
     
-    //returns an array of activity objects
+    /**
+    * Queries the DB to get all the activities that the user was enrolled
+    *
+    * @param int $user the id of the user
+    *
+    * @return an array of activity objects
+    */
     public static function getAllDoneByUser($user){
         
         $CI =& get_instance();
@@ -164,7 +198,13 @@ class Activity extends CI_Model
         return $arr;
     }
     
-    //returns an array of activity objects of a certain $company
+    /**
+    * Queries the DB to get all the activities of a company
+    *
+    * @param int $company the id of the company
+    *
+    * @return an array of activity objects
+    */
     public static function getAllByCompany($company){
         //com que es method static he de fer aixo
         $CI =& get_instance();
@@ -184,7 +224,13 @@ class Activity extends CI_Model
         return $arr;
     }
 
-    /** returns array of User objects */
+    /**
+    * Queries the DB to get all the users enrolled in an activity
+    *
+    * @param int $arr_act An array of integers that are the id of diferent activities
+    *
+    * @return an array of arrays of User objects
+    */
     public static function getEnrolledUsers($arr_act){
         $CI =& get_instance();
 
@@ -206,7 +252,14 @@ class Activity extends CI_Model
         return $arr;
     }
     
-    
+    /**
+    * Updates a certain activity's status to the param status
+    *
+    * @param int $id Identification code of an activity
+    * @param string $status The status that we want
+    *
+    * @return 1 if it worked, 0 if not
+    */
     public static function update_status($id, $status){
         $CI =& get_instance();
         $sql = "UPDATE activity SET status = '$status' WHERE id = $id";

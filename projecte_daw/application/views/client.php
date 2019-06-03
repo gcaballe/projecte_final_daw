@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+	<title>Gcaballe - Projecte DAW</title>
 
 	<?php
 		$this->load->view('head_includes');
@@ -72,7 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="m-2 p-2 row">
 
 		<div class="col-12 col-md-8 col-lg-5">
-			<h2>List of open activities:</h2>
+			<h1>List of open activities:</h1>
         
 			<div class="accordion" id="accordionListActivities">
         
@@ -83,18 +83,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 
 			?>
         
-			  <div class="card">
+			  <div class="card rounded">
 				<div class="card-header" id="heading<?php echo $i; ?>">
 				  <div class="mb-0">
 					<button class="btn w-100" type="button" data-toggle="collapse" data-target="#collapse<?php echo $i; ?>" aria-expanded="true" aria-controls="collapse<?php echo $i; ?>">
 					  <!-- data dins del boto llista -->
 						<div class="row">
-							<div class="col-1">#<?php echo $i; ?></div>
-							<div class="col-3"><?php echo $act->getName(); ?></div>
-							<div class="col-4 offset-4">
+							<div class="d-none d-sm-block w-10">#<?php echo $i; ?></div>
+							<div class="col-5"><?php echo $act->getName(); ?></div>
+							<div class="col-5 offset-1">
 									<?php
 										$d = date_parse($act->getTimestamp());
-										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . " i " . $d['minute'] . " minuts.";
+										echo $d['day'] . " de " . $mesos[$d['month']] . ", a les " . $d['hour'] . ":";
+										if($d['minute']<10) echo "0" . $d['minute'];
+										else echo $d['minute'];
 									?>
 							</div>
 						</div>
@@ -141,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		<div class="col-12 col-md-4 offset-md-0 col-lg-6 offset-lg-1" id="rate_experiences">
 			
-			<h2>Rate your experiences!</h2>
+			<h1>Rate your experiences!</h1>
         
 			<div class="row">
 				<?php       
@@ -151,7 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					<div class="col-8 offset-2 col-md-12 offset-md-0 col-lg-5 m-1 card">
 						<div class="card-body">
-							<h5 class="card-title"><?php echo $act->getName(); ?></h5>
+							<h2 class="card-title"><?php echo $act->getName(); ?></h2>
 							<p class="card-text"><?php echo $act->getDescription(); ?></p>
 
 							<div>
@@ -164,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<!-- 5 star rating system -->
 								<input type="hidden" name="act_id" id="act_id" value="<?php echo $act->getId(); ?>" />
 								<input type="hidden" name="user_id" id="user_id" value="<?php echo $user_session->getId(); ?>" />
-
+						
 								<div class="rate">
 									<input type="radio" id="star5" name="rate" value="5" />
 									<label for="star5" title="text">5 stars</label>

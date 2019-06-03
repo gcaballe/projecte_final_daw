@@ -26,9 +26,10 @@ SET time_zone = "+00:00";
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `activated`, `activation_code`) VALUES
-(6170, 'company1', '63a9f0ea7bb98050796b649e85481845', 'w2.gcaballe@infomila.info', 1, 1, NULL),
-(6171, 'usuari1', '63a9f0ea7bb98050796b649e85481845', 'm2.gcaballe@infomila.info', 2, 1, NULL);
+INSERT INTO `user` (`username`, `password`, `email`, `role`, `activated`, `activation_code`) VALUES
+('company1', '63a9f0ea7bb98050796b649e85481845', 'w2.gcaballe@infomila.info', 1, 1, NULL),
+('usuari1', '63a9f0ea7bb98050796b649e85481845', 'm2.gcaballe@infomila.info', 2, 1, NULL),
+('admin', '63a9f0ea7bb98050796b649e85481845', 'admin@admin', 0, 1, NULL);
 
 
 --

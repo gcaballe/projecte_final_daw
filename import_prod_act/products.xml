@@ -1,0 +1,23 @@
+<data>
+    <products>
+        <product id="20">
+            <name>Pernil york</name>
+            <description>Un pernil de X denominació d'origen, molt bó.</description>
+        </product>
+        <product id="21">
+            <name>Formatge de cabra</name>
+            <description>De les cabres més simpàtiques dels pirineus.</description>
+        </product>
+        <product id="22">
+            <name>Vi del penedès 95</name>
+            <description>La collita del 95 és una collita excepcional.</description>
+        </product>
+        <product id="23">
+            <name>Vi barato</name>
+            <description>Excel·lent per fer calimotxos després d'una setmana intensa de projecte.</description>
+        </product>
+    </products>
+    <activities>
+        
+    </activities>
+</data>

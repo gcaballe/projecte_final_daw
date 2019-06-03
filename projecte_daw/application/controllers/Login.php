@@ -8,6 +8,11 @@ class Login extends CI_Controller {
         $this->load->view('login');
 	}
     
+    /**
+    * Verifies a user, weather he is a company or an user
+    *
+    * @return void
+    */
     public function verify_user(){
         
         $u = $this->input->post('username');
@@ -37,7 +42,10 @@ class Login extends CI_Controller {
         
     }
     
-    /** Register a user, not a company
+    /**
+    * Register a user, not a company
+    *
+    * @return void
     */
     public function register_user(){
 
@@ -82,12 +90,27 @@ class Login extends CI_Controller {
 		redirect('Login/index');
     }
 
+    /**
+    * Register a user, not a company
+    *
+    * When the user recieves the confimraiton email, he clicks on the link and goes here.
+    * This function looks up what user has the confirmation code, and activates the user.
+    *
+    * @param int $code The code sent via email to activate the user
+    *
+    * @return void
+    */
 	public function confirm_user($code){
 		$r = User::activate_user($code);
 		redirect('Login/index');
 	}
     
-    /** Register a acompany
+    /**
+    * Register a acompany
+    *
+    * This function inserts both a company and a user
+    *
+    * @return void
     */
     public function register_company(){
 
@@ -141,6 +164,11 @@ class Login extends CI_Controller {
 		redirect('Login/index');
     }
 	
+    /**
+    * Logs out the user and destroys the session where the user data is stored.
+    *
+    * @return void
+    */
 	public function logout(){
         
         session_destroy();

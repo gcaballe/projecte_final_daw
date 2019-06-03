@@ -1,11 +1,17 @@
 <?php
-
-// **********************************************
-// Author: Guillem Caballé Tomàs
-// **********************************************
-
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-// User class is the user of the webpage
+/**
+* User class is the user of the webpage
+* Example usage:
+* Company::getCompanyIdByUserId($id)) {
+* print "I am an example.";
+* }
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/ 
 class User extends CI_Model
 {
     
@@ -99,13 +105,22 @@ class User extends CI_Model
       return $aux . "<br>";
   }  
   
-  /**
-  * return true if the user has $role
-  */
+    /**
+    * Verifies if an user has a certain role
+    *
+    * @param int $role the role in question
+    *
+    * @return return true or false
+    */
   public function hasRole($role){
       return $this->role == $role;
   }
   
+  /**
+    * Inserts an User into the DB
+    *
+    * @return void
+    */
   public function insert(){
       $u = $this->getUsername();
       $p = $this->getPassword();
@@ -115,12 +130,23 @@ class User extends CI_Model
       return $this->db->query($sql);
   }
 
+    /**
+    * Activates an user account
+    *
+    * @param int $code the code of the user
+    * @return void
+    */
   public static function activate_user($code){
 	  $CI =& get_instance();
 	  $sql = "UPDATE user SET activated = 1 WHERE '$code' = MD5( CONCAT( MD5(username), MD5(password) ) );";
 	  return $CI->db->query($sql);
   }
   
+  /**
+    * Selects all info of an user by his username
+    *
+    * @return void
+    */
   public function getIdByUsername(){
       
       $u = $this->getUsername();
@@ -130,7 +156,12 @@ class User extends CI_Model
       
   }
   
-  //returns 0 if not valid, 1 if valid
+  /**
+    * Validates the password and username of an user login
+    *
+    * @return 0 if not valid, 1 if valid
+    */
+  
   public function validate(){
       $u = $this->getUsername();
       $p = $this->getPassword();

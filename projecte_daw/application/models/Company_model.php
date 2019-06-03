@@ -1,9 +1,16 @@
 <?php
-// **********************************************
-// Author: Guillem Caball� Tom�s
-// **********************************************
-
-// Company class is the registry of a company linked to a user
+/**
+* Company_model class is the info about a company
+* Example usage:
+* Company::getCompanyIdByUserId($id)) {
+* print "I am an example.";
+* }
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/
 class Company_model extends CI_Model
 {
   //unique code
@@ -84,7 +91,10 @@ class Company_model extends CI_Model
     return $this->lng;
 }
   
-  
+    /**
+    * Inserts the data of the company in the DB
+    *
+    */
     public function insert(){
         //id es autocomplete
         $n = $this->getName();
@@ -97,6 +107,13 @@ class Company_model extends CI_Model
         return $this->db->query($sql);
     }
 
+    /**
+    * Queries the DB to get the ID of a company
+    *
+    * @param the id of the user
+    *
+    * @return the id of the company
+    */
     public static function getCompanyIdByUserId($id){
         $CI =& get_instance();
         $sql = "SELECT * FROM company WHERE user = $id";

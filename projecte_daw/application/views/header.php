@@ -1,5 +1,5 @@
 <nav id="myHeader" class="navbar navbar-expand-md navbar-light bg-warning">
-  <a class="navbar-brand" href="<?php echo site_url("login/index");?>">
+  <a class="navbar-brand" aria-label="link to index" href="<?php echo site_url("login/index");?>">
   	
 	<div class=" mb-2 wineglass left">
 		<div class="wine_inside"></div>
@@ -34,7 +34,7 @@
       </li>
     </ul>
     <div class="my-2 my-lg-0">
-        <a href="<?php echo site_url("company/logout/")?>"><button class="btn btn-outline-primary">Logout!</button></a>
+        <a href="<?php echo site_url("company/logout/")?>"><button id="logout_button" class="btn btn-primary">Logout!</button></a>
     </div>
   </div>
 </nav>

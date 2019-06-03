@@ -1,9 +1,14 @@
 <?php
-// **********************************************
-// Author: Guillem Caball� Tom�s
-// **********************************************
-
-// Review class
+/**
+* Review class is the review a user makes of an activity made by a company
+* Example usage:
+* Company::getCompanyIdByUserId($id)) ;
+*
+* @author Guillem Caballe
+* @version $Revision: 1.0 $
+* @access public 
+* 
+*/
 class Review extends CI_Model
 {
     private $user;
@@ -80,6 +85,12 @@ class Review extends CI_Model
         return $aux . "<br>";
     }
 	
+    
+    /**
+    * Enrolls an user to an activity
+    *
+    * @return true or false
+    */
     public function enroll(){
         $u = $this->getUser();
         $a = $this->getActivity();
@@ -90,6 +101,11 @@ class Review extends CI_Model
         return $this->db->query($sql);
     }
     
+    /**
+    * Updates the DB to especify a rating in a review
+    *
+    * @return true or false
+    */
     public function update_rating(){
         $u = $this->getUser();
         $a = $this->getActivity();
@@ -100,8 +116,10 @@ class Review extends CI_Model
         return $this->db->query($sql);
     }
     
-    /*
-    /*deletes a review, or an enrollment
+    /**
+    * Deletes a review of a certian user and certain activity
+    *
+    * @return true or false
     */
     public function delete_review(){
         $u = $this->getUser();
@@ -111,7 +129,11 @@ class Review extends CI_Model
         return $this->db->query($sql);
     }
     
-    
+    /**
+    * Queries the DB to get all the enrollments of an activity
+    *
+    * @return array of ints where the key are the user
+    */
     public static function getEnrollments($user_id, $act_arr){
 
         $CI =& get_instance();
@@ -155,7 +177,13 @@ class Review extends CI_Model
         return $arr;
     }*/
 
-    /** returns array of Review objects */
+    /*
+    * Gets an array of review objects of every activity in the array passed by param
+    *
+    * @param Activity[] $arr_act Array of activities
+    *
+    * @return Array of reviews
+    */
     public static function getReviewsOfActivities($arr_act){
         $CI =& get_instance();
 
@@ -175,6 +203,14 @@ class Review extends CI_Model
         return $arr;
     }
 
+    /*
+    * Finds the review of a certain user in the given array of reviews
+    * 
+    * @param Review[] $array Array of reviews
+    * @param int $user_id Id of the user
+    *
+    * @return A review object
+    */
     public static function find($array, $user_id){
         foreach ($array as $rev){
             if($rev->getUser() == $user_id) return $rev;
