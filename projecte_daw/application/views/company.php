@@ -195,6 +195,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 
+        <h2 class="p4">
+        <a href="http://92.222.27.83:8080/jasperserver/rest_v2/reports/w2-gcaballe/report_usuari.html?j_username=w2-gcaballe&j_password=47105665D&id_user=
+        <?php echo $co_id; ?>"
+        >El teu report de company</a>
+        </h2>
 
 		<!-- Modal // importar dades -->
 		<div class="modal fade" id="importdataModal" tabindex="-1" role="dialog" aria-labelledby="importdataModalLabel" aria-hidden="true">

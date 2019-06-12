@@ -141,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 
 
-		<div class="col-12 col-md-4 offset-md-0 col-lg-6 offset-lg-1" id="rate_experiences">
+		<div class="col-12 col-md-4 offset-md-0 col-lg-6 offset-lg-1 mt-2 mt-lg-0" id="rate_experiences">
 			
 			<h1>Rate your experiences!</h1>
         
@@ -151,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					foreach($myDoneActivities as $act){
 				?>
 
-					<div class="col-8 offset-2 col-md-12 offset-md-0 col-lg-5 m-1 card">
+					<div class="col-8 offset-sm-2 col-md-12 offset-md-0 col-lg-5 m-1 card">
 						<div class="card-body">
 							<h2 class="card-title"><?php echo $act->getName(); ?></h2>
 							<p class="card-text"><?php echo $act->getDescription(); ?></p>
@@ -179,7 +179,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<input type="radio" id="star1" name="rate" value="1" />
 									<label for="star1" title="text">1 star</label>
 								</div>
-
+                                
 								<div class="form-group">
 									<label for="text_review">Any opinions?<br></label>
 									<input type="text" name="text_review" id="text_review" /><br>
@@ -200,6 +200,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				?>
 			</div>
 		</div>
+
+        <h2 class="p4">
+        <a href="http://92.222.27.83:8080/jasperserver/rest_v2/reports/w2-gcaballe/report_usuari.html?j_username=w2-gcaballe&j_password=47105665D&id_user=
+        <?php echo $user_session->getId(); ?>"
+        >El teu report</a>
+        </h2>
 	</div>
 </div>
 

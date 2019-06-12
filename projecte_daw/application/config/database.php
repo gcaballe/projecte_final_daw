@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'projecte_daw',
+	'hostname' => '92.222.27.83',
+	'username' => 'w2-gcaballe',
+	'password' => '47105665D',
+	'database' => 'w2_gcaballe',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <!-- jquery -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 
@@ -25,3 +27,4 @@
 
 <!-- logo_animation style -->
 <link rel="stylesheet" href="<?php echo base_url() . 'assets/logo_animation_style.css'; ?>" >
+

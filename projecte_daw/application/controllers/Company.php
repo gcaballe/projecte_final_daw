@@ -16,6 +16,7 @@ class Company extends CI_Controller {
         $user = unserialize($this->session->user);
         $company_id = Company_Model::getCompanyIdByUserId($user->getId());
 
+        $data['co_id'] = $company_id;
         $data['products'] = Product::getAllByCompany($company_id);
         
         $data['activities'] = Activity::getAllByCompany($company_id);

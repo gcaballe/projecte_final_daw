@@ -26,10 +26,10 @@ SET time_zone = "+00:00";
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`username`, `password`, `email`, `role`, `activated`, `activation_code`) VALUES
-('company1', '63a9f0ea7bb98050796b649e85481845', 'w2.gcaballe@infomila.info', 1, 1, NULL),
-('usuari1', '63a9f0ea7bb98050796b649e85481845', 'm2.gcaballe@infomila.info', 2, 1, NULL),
-('admin', '63a9f0ea7bb98050796b649e85481845', 'admin@admin', 0, 1, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`, `activated`, `activation_code`) VALUES
+('2','company1', '63a9f0ea7bb98050796b649e85481845', 'w2.gcaballe@infomila.info', 1, 1, NULL),
+('3','usuari1', '63a9f0ea7bb98050796b649e85481845', 'm2.gcaballe@infomila.info', 2, 1, NULL),
+('1','admin', '63a9f0ea7bb98050796b649e85481845', 'admin@admin', 0, 1, NULL);
 
 
 --
@@ -37,7 +37,7 @@ INSERT INTO `user` (`username`, `password`, `email`, `role`, `activated`, `activ
 --
 
 INSERT INTO `company` (`id`, `name`, `cif`, `user`, `address`, `lat`, `lng`) VALUES
-(3997, 'Restaurant la Sal', '12341932481', 6170, '', 41.56956323391536, 1.4080948028564535);
+(3997, 'Restaurant la Sal', '12341932481', 2, 'Igualada', 41.56956323391536, 1.4080948028564535);
 
 
 --
@@ -68,8 +68,8 @@ INSERT INTO `activity` (`id`, `name`, `product`, `description`, `status`, `times
 --
 
 INSERT INTO `review` (`user`, `activity`, `enrolled`, `rating`, `text`) VALUES
-(6171, 37, 1, 3, 'Molt bo.'),
-(6171, 40, 1, 0, '');
+(3, 37, 1, 3, 'Molt bo.'),
+(3, 40, 1, 0, '');
 
 
 COMMIT;
